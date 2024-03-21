@@ -1,21 +1,42 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, SafeAreaView, StatusBar, ScrollView, StyleSheet, ViewStyle, TextStyle, Text, useWindowDimensions, Image, ImageStyle } from 'react-native';
 import Empresa, { EmpresaProps } from '../components/empresa/Empresa';
+import { Reponse, getEmpresas } from '../services/getEmpresas';
 
 function Home(): React.JSX.Element {
 
-    const dados: EmpresaProps = {
-        empresa: 'Binance',
-        valor: 35000,
-        volume: 10,
-        img: 'https://i.imgur.com/sar7suv.png',
-        id: 0
+    const [empresas, setEmpresas] = useState<Reponse>();
+
+    function RenderizarEmpresas(): React.JSX.Element {        
+        return (
+            <>
+                {empresas?.data?.map((item: EmpresaProps) => {
+                    return (<Empresa {...item} key={item.id} />)
+                })}
+            </>
+        )
     }
+
+    const buscarEmpresas = () => {
+        try {
+            getEmpresas().then((res) => {
+                setEmpresas(res)
+            }).catch((error) => {
+
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        buscarEmpresas();
+    }, []);
+
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.container}>
-            <Empresa {...dados} />
-
+                {RenderizarEmpresas()}
             </ScrollView>
         </SafeAreaView>
     );
