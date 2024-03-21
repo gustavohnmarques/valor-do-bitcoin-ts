@@ -1,34 +1,27 @@
 import React from 'react';
 import { View, SafeAreaView, StatusBar, ScrollView, StyleSheet, ViewStyle, TextStyle, Text, useWindowDimensions, Image, ImageStyle } from 'react-native';
+import Empresa, { EmpresaProps } from '../components/empresa/Empresa';
 
-function App(): React.JSX.Element {
+function Home(): React.JSX.Element {
 
+    const dados: EmpresaProps = {
+        empresa: 'Binance',
+        valor: 35000,
+        volume: 10,
+        img: 'https://i.imgur.com/sar7suv.png',
+        id: 0
+    }
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.container}>
-                <View style={styles.empresa}>
-                    <View style={styles.empresaContainer}>
-                        <Image source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Binance_Logo.svg/768px-Binance_Logo.svg.png' }} style={styles.empresaImg} />
-                    </View>
-                    <View style={styles.empresaDetalhes}>
-                        <View style={styles.empresaDetalhesContainer}>
-                            <Text style={styles.empresaNome}>Binance</Text>
-                        </View>
-                        <View style={styles.empresaDetalhesContainer}>
-                            <Text style={styles.empresaValor}>R$ 340.000,00</Text>
-                        </View>
-                        <View style={[styles.empresaDetalhesContainer, { alignItems: 'flex-end' }]}>
-                            <Text style={styles.empresaVolume}>Vol: 340.7</Text>
-                        </View>
-                    </View>
-                </View>
+            <Empresa {...dados} />
 
             </ScrollView>
         </SafeAreaView>
     );
 }
 
-export default App;
+export default Home;
 
 const styles = StyleSheet.create({
     container: {
