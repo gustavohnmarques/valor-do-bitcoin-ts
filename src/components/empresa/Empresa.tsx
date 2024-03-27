@@ -1,21 +1,28 @@
 import React from 'react';
 import { View, StyleSheet, ViewStyle, TextStyle, Text, Image, ImageStyle } from 'react-native';
+import FastImage from 'react-native-fast-image'
 
 export type EmpresaProps = {
     nome: string;
-    last: number;    
+    last: number;
     vol: number;
     data_atualizacao: string;
     img: string
-  };
-  
+};
+
 
 function Empresa(dados: EmpresaProps): React.JSX.Element {
 
     return (
         <View style={styles.empresa}>
             <View style={styles.empresaContainer}>
-                <Image source={{ uri: dados.img }} style={styles.empresaImg} />
+                <FastImage
+                    style={styles.empresaImg}
+                    source={{
+                        uri: dados.img,                                          
+                    }}
+                    resizeMode={FastImage.resizeMode.contain}
+                />                
             </View>
             <View style={styles.empresaDetalhes}>
                 <View style={styles.empresaDetalhesContainer}>
@@ -55,8 +62,9 @@ const styles = StyleSheet.create({
     empresaImg: {
         width: 70,
         height: 70,
-        resizeMode: 'contain'
-    } as ImageStyle,
+        resizeMode: 'contain',
+        borderRadius: 10
+    },
 
     empresaDetalhes: {
         flex: 1,
