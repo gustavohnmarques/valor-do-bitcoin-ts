@@ -14,7 +14,7 @@ export type Reponse = {
 
 export const getEmpresas = () => {
     return new Promise<Reponse>((resolve, reject) => {
-        axios.get('https://65fb870614650eb2100a194b.mockapi.io/api/v1/empresas').then((response: Reponse) => {
+        axios.get('http://192.168.0.113/public/empresas').then((response: Reponse) => {
             resolve(response)
         }).catch((error: ResponseError) => {                    
             reject(error)

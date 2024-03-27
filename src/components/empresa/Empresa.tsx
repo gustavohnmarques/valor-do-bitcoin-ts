@@ -2,11 +2,11 @@ import React from 'react';
 import { View, StyleSheet, ViewStyle, TextStyle, Text, Image, ImageStyle } from 'react-native';
 
 export type EmpresaProps = {
-    empresa: string;
-    valor: number;    
-    volume: number;
-    img: string;
-    id: number
+    nome: string;
+    last: number;    
+    vol: number;
+    data_atualizacao: string;
+    img: string
   };
   
 
@@ -19,13 +19,13 @@ function Empresa(dados: EmpresaProps): React.JSX.Element {
             </View>
             <View style={styles.empresaDetalhes}>
                 <View style={styles.empresaDetalhesContainer}>
-                    <Text style={styles.empresaNome}>{dados.empresa}</Text>
+                    <Text style={styles.empresaNome}>{dados.nome}</Text>
                 </View>
                 <View style={styles.empresaDetalhesContainer}>
-                    <Text style={styles.empresaValor}>R$ {dados.valor}</Text>
+                    <Text style={styles.empresaValor}>R$ {dados.last}</Text>
                 </View>
                 <View style={[styles.empresaDetalhesContainer, { alignItems: 'flex-end' }]}>
-                    <Text style={styles.empresaVolume}>Vol: {dados.volume}</Text>
+                    <Text style={styles.empresaVolume}>Vol: {dados.vol}</Text>
                 </View>
             </View>
         </View>
