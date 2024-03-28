@@ -33,7 +33,7 @@ function Empresa(dados: EmpresaProps): React.JSX.Element {
                     <Text style={styles.empresaValor}>R$ {MoneyFormatter({amount: dados.last, decimalCount: 2 })}</Text>
                 </View>
                 <View style={[styles.empresaDetalhesContainer, { alignItems: 'flex-end' }]}>
-                    <Text style={styles.empresaVolume}>Vol: {dados.vol}</Text>
+                    <Text style={styles.empresaVolume}>Vol: { Number(dados.vol).toFixed(2)}</Text>
                 </View>
             </View>
         </View>
