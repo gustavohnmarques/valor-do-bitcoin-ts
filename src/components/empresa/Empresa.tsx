@@ -1,10 +1,11 @@
 import React from 'react';
 import { View, StyleSheet, ViewStyle, TextStyle, Text, Image, ImageStyle } from 'react-native';
 import FastImage from 'react-native-fast-image'
+import { MoneyFormatter } from '../../utils/MoneyFormatter';
 
 export type EmpresaProps = {
     nome: string;
-    last: number;
+    last: string;
     vol: number;
     data_atualizacao: string;
     img: string
@@ -29,7 +30,7 @@ function Empresa(dados: EmpresaProps): React.JSX.Element {
                     <Text style={styles.empresaNome}>{dados.nome}</Text>
                 </View>
                 <View style={styles.empresaDetalhesContainer}>
-                    <Text style={styles.empresaValor}>R$ {dados.last}</Text>
+                    <Text style={styles.empresaValor}>R$ {MoneyFormatter({amount: dados.last, decimalCount: 2 })}</Text>
                 </View>
                 <View style={[styles.empresaDetalhesContainer, { alignItems: 'flex-end' }]}>
                     <Text style={styles.empresaVolume}>Vol: {dados.vol}</Text>
