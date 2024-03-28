@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { View, SafeAreaView, StatusBar, ScrollView, StyleSheet, ViewStyle, TextStyle, Text, useWindowDimensions, Image, ImageStyle } from 'react-native';
+import { View, SafeAreaView, StatusBar, ScrollView, StyleSheet, ViewStyle, TextStyle, Text, useWindowDimensions, Image, ImageStyle, RefreshControl } from 'react-native';
 import Empresa, { EmpresaProps } from '../components/empresa/Empresa';
 import { Reponse, getEmpresas } from '../services/getEmpresas';
 
 function Home(): React.JSX.Element {
 
     const [empresas, setEmpresas] = useState<Reponse>();
+    const [refreshing, setRefreshing] = useState(false);
 
-    function RenderizarEmpresas(): React.JSX.Element {        
+    function RenderizarEmpresas(): React.JSX.Element {
         return (
             <>
                 {empresas?.data?.map((item: EmpresaProps) => {
@@ -19,8 +20,10 @@ function Home(): React.JSX.Element {
 
     const buscarEmpresas = () => {
         try {
+            setRefreshing(true);
             getEmpresas().then((res) => {
                 setEmpresas(res)
+                setRefreshing(false);
             }).catch((error) => {
 
             })
@@ -35,7 +38,13 @@ function Home(): React.JSX.Element {
 
     return (
         <SafeAreaView style={styles.container}>
-            <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.container}>
+            <ScrollView
+                contentInsetAdjustmentBehavior="automatic"
+                style={styles.container}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={buscarEmpresas} />
+                }>
+            
                 {RenderizarEmpresas()}
             </ScrollView>
         </SafeAreaView>

@@ -4,6 +4,7 @@ import FastImage from 'react-native-fast-image'
 import { MoneyFormatter } from '../../utils/MoneyFormatter';
 
 export type EmpresaProps = {
+    id: number;
     nome: string;
     last: string;
     vol: number;
