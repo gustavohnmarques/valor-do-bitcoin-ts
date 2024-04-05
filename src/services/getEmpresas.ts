@@ -14,7 +14,7 @@ export type Reponse = {
 
 export const getEmpresas = () => {
     return new Promise<Reponse>((resolve, reject) => {
-        axios.get('http://192.168.0.113/public/empresas').then((response: Reponse) => {
+        axios.get('https://valordobitcoin.marques.dev.br/public/empresas').then((response: Reponse) => {
             resolve(response)
         }).catch((error: ResponseError) => {                    
             reject(error)

@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { View, SafeAreaView, StatusBar, ScrollView, StyleSheet, ViewStyle, TextStyle, Text, useWindowDimensions, Image, ImageStyle, RefreshControl } from 'react-native';
 import Empresa, { EmpresaProps } from '../components/empresa/Empresa';
 import { Reponse, getEmpresas } from '../services/getEmpresas';
+import Skeleton from '../components/empresa/Skeleton';
 
 function Home(): React.JSX.Element {
 
     const [empresas, setEmpresas] = useState<Reponse>();
     const [refreshing, setRefreshing] = useState(false);
 
-    function RenderizarEmpresas(): React.JSX.Element {
+    function renderizarEmpresas(): React.JSX.Element {
         return (
             <>
                 {empresas?.data?.map((item: EmpresaProps) => {
@@ -18,8 +19,20 @@ function Home(): React.JSX.Element {
         )
     }
 
+    function renderizarSkeleton(): React.JSX.Element {
+        return (
+            <>            
+                {[0,1,2,3,4,5,6].map((i) => {
+                    return (<Skeleton key={i} />)
+                })}
+            </>
+        )
+    }
+
     const buscarEmpresas = () => {
         try {
+            setEmpresas({data: [], status: 0});
+            
             setRefreshing(true);
             getEmpresas().then((res) => {
                 setEmpresas(res)
@@ -44,8 +57,8 @@ function Home(): React.JSX.Element {
                 refreshControl={
                     <RefreshControl refreshing={refreshing} onRefresh={buscarEmpresas} />
                 }>
-            
-                {RenderizarEmpresas()}
+                
+                {!empresas?.data?.length ? renderizarSkeleton() : renderizarEmpresas()}
             </ScrollView>
         </SafeAreaView>
     );
