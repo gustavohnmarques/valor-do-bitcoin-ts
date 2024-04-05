@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { View, SafeAreaView, StatusBar, ScrollView, StyleSheet, ViewStyle, TextStyle, Text, useWindowDimensions, Image, ImageStyle, RefreshControl } from 'react-native';
+import { View, SafeAreaView, ScrollView, StyleSheet, ViewStyle, TextStyle, ImageStyle, RefreshControl } from 'react-native';
 import Empresa, { EmpresaProps } from '../components/empresa/Empresa';
 import { Reponse, getEmpresas } from '../services/getEmpresas';
 import Skeleton from '../components/empresa/Skeleton';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 function Home(): React.JSX.Element {
 
     const [empresas, setEmpresas] = useState<Reponse>();
     const [refreshing, setRefreshing] = useState(false);
+
+    //Ordenação
+    const [ordemDesc, setOrdemDesc] = useState(true);
 
     function renderizarEmpresas(): React.JSX.Element {
         return (
@@ -21,8 +25,8 @@ function Home(): React.JSX.Element {
 
     function renderizarSkeleton(): React.JSX.Element {
         return (
-            <>            
-                {[0,1,2,3,4,5,6].map((i) => {
+            <>
+                {[0, 1, 2, 3, 4, 5, 6].map((i) => {
                     return (<Skeleton key={i} />)
                 })}
             </>
@@ -31,11 +35,10 @@ function Home(): React.JSX.Element {
 
     const buscarEmpresas = () => {
         try {
-            setEmpresas({data: [], status: 0});
-            
+            setEmpresas({ data: [], status: 0 });            
             setRefreshing(true);
             getEmpresas().then((res) => {
-                setEmpresas(res)
+                setEmpresas({ data: ordenar(res.data), status: res.status })                  
                 setRefreshing(false);
             }).catch((error) => {
 
@@ -44,6 +47,18 @@ function Home(): React.JSX.Element {
             console.log(error)
         }
     }
+
+    const ordenar = (array: EmpresaProps[]) => {        
+        return array.sort(function (a: EmpresaProps, b: EmpresaProps) {            
+            return ordemDesc ? Number(a.last) - Number(b.last) : Number(b.last) - Number(a.last)
+        })
+    }
+
+    useEffect(() => {
+        if(empresas?.data?.length != undefined){
+            setEmpresas({ data: ordenar(empresas?.data as EmpresaProps[]), status: empresas?.status as number })
+        }        
+    }, [ordemDesc]);
 
     useEffect(() => {
         buscarEmpresas();
@@ -57,7 +72,13 @@ function Home(): React.JSX.Element {
                 refreshControl={
                     <RefreshControl refreshing={refreshing} onRefresh={buscarEmpresas} />
                 }>
-                
+
+                <View style={styles.ordenacaoContainer}>
+                    <View style={styles.ordenacaoBotao} onTouchStart={() => setOrdemDesc(!ordemDesc)}>
+                        <Icon name={!ordemDesc ? "sort-amount-desc" : "sort-amount-asc"} size={27} color="#fff" />
+                    </View>
+                </View>
+
                 {!empresas?.data?.length ? renderizarSkeleton() : renderizarEmpresas()}
             </ScrollView>
         </SafeAreaView>
@@ -120,5 +141,22 @@ const styles = StyleSheet.create({
         color: '#dfdfe0',
         fontSize: 14,
     } as TextStyle,
+
+    ordenacaoContainer: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        flex: 1,
+        height: 35,
+        marginBottom: 20
+    } as ViewStyle,
+
+    ordenacaoBotao: {
+        height: 35,
+        width: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+    } as ViewStyle,
+
+
 
 });
