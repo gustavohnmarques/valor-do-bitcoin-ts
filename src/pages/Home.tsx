@@ -4,6 +4,7 @@ import Empresa, { EmpresaProps } from '../components/empresa/Empresa';
 import { Reponse, getEmpresas } from '../services/getEmpresas';
 import Skeleton from '../components/empresa/Skeleton';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import BootSplash from "react-native-bootsplash";
 
 function Home(): React.JSX.Element {
 
@@ -61,6 +62,7 @@ function Home(): React.JSX.Element {
     }, [ordemDesc]);
 
     useEffect(() => {
+        BootSplash.hide({ fade: true });
         buscarEmpresas();
     }, []);
 
